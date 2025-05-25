@@ -1,5 +1,6 @@
 # Sistema de Gestión de Pasajes SkyRoute
 
+#---------------------------------------- Opciones del Menu ----------------------------------------
 #Aca definimos las opciones en los menus con una tupla
 menu_principal = ("Gestionar Clientes", "Gestionar Destinos", "Gestionar Ventas", 
                  "Consultar Ventas", "Botón de Arrepentimiento", "Ver Reporte General", 
@@ -9,12 +10,130 @@ submenu_consulta = ("Ventas del día", "Ventas de la última semana",
                    "Ventas por cliente", "Volver al Menú Principal")
 
 
+
+#---------------------------------------- Definicion de Vectores ----------------------------------------
 # Definimos los vectores que vamos a utilizar para almacenar datos, ya que estos son los que se pueden modificar luego
 clientes = []
 destinos = []
 ventas = []
 
 
+
+#---------------------------------------- Funciones para Gestionar Clientes ----------------------------------------
+def ver_clientes():
+    if not clientes:
+        print("\nNo hay clientes registrados.")
+    else:
+        print("\nLista de Clientes:")
+        i = 1
+        for cliente in clientes:
+            print(f"\nCliente {i}:")
+            print(f"Razón Social: {cliente['razon_social']}")
+            print(f"CUIT: {cliente['cuit']}")
+            print(f"Correo: {cliente['correo']}")
+            print("-" * 30)
+            i += 1
+            
+
+def agregar_cliente():
+    print("\n--- Agregar Cliente ---")
+    # Validación de CUIT
+    while True:
+        cuit = input("Ingrese CUIT (solo números): ")
+        if cuit.isdigit() and len(cuit) == 11:
+            # Verificar si el CUIT ya existe
+            if any(cliente['cuit'] == cuit for cliente in clientes):
+                print("Este CUIT ya está registrado.")
+                continue
+            break
+        print("El CUIT debe contener 11 números")
+    
+    razon_social = input("Ingrese Razón Social: ")
+    
+    # Validación de correo
+    while True:
+        correo = input("Ingrese correo electrónico: ")
+        if '@' in correo and '.' in correo:
+            break
+        print("Ingrese un correo electrónico válido")
+    
+    # Agregar cliente a la lista
+    clientes.append({
+        'cuit': cuit,
+        'razon_social': razon_social,
+        'correo': correo
+    })
+    
+    print(f"\nCliente agregado exitosamente:")
+    print(f"CUIT: {cuit}")
+    print(f"Razón Social: {razon_social}")
+    print(f"Correo: {correo}")
+
+def modificar_cliente():
+    if not clientes:
+        print("\nNo hay clientes registrados para modificar.")
+    else:
+        print("\nLista de Clientes:")
+        i = 1
+        for cliente in clientes:
+            print(f"\nCliente {i}:")
+            print(f"Razón Social: {cliente['razon_social']}")
+            print(f"CUIT: {cliente['cuit']}")
+            print(f"Correo: {cliente['correo']}")
+            print("-" * 30)
+            i += 1
+
+        while True:
+            try:
+                indice = int(input("\nIngrese el número del cliente a modificar: ")) - 1
+                if 0 <= indice < len(clientes):
+                    cliente = clientes[indice]
+                    print(f"\nModificando cliente {indice + 1}:")
+                    print(f"CUIT actual: {cliente['cuit']}")
+                    print(f"Razón Social actual: {cliente['razon_social']}")
+                    print(f"Correo actual: {cliente['correo']}")
+                    
+                    # Modificar datos
+                    nuevo_cuit = input("\nIngrese nuevo CUIT (Enter para mantener el actual): ")
+                    if nuevo_cuit:
+                        # Validar que el nuevo CUIT tenga 11 dígitos
+                        if not nuevo_cuit.isdigit() or len(nuevo_cuit) != 11:
+                            print("El CUIT debe contener 11 números")
+                        else:
+                            # Verificar si el nuevo CUIT ya existe en otro cliente
+                            if any(c['cuit'] == nuevo_cuit for c in clientes if c != cliente):
+                                print("Este CUIT ya está registrado para otro cliente")
+                            else:
+                                cliente['cuit'] = nuevo_cuit
+                    
+                    nueva_razon_social = input("Ingrese nueva Razón Social (Enter para mantener la actual): ")
+                    if nueva_razon_social:
+                        cliente['razon_social'] = nueva_razon_social
+                    
+                    nuevo_correo = input("Ingrese nuevo correo (Enter para mantener el actual): ")
+                    if nuevo_correo:
+                        if '@' in nuevo_correo and '.' in nuevo_correo:
+                            cliente['correo'] = nuevo_correo
+                        else:
+                            print("Correo no válido, se mantiene el actual")
+                    
+                    print("\nCliente modificado exitosamente:")
+                    print(f"CUIT: {cliente['cuit']}")
+                    print(f"Razón Social: {cliente['razon_social']}")
+                    print(f"Correo: {cliente['correo']}")
+                    break
+                else:
+                    print("Número de cliente no válido.")
+            except ValueError:
+                print("Por favor, ingrese un número válido.")
+
+
+
+#---------------------------------------- Funciones para Gestionar Destinos ----------------------------------------
+
+
+
+#---------------------------------------- Funciones para Navegar en el Menu ----------------------------------------
 # Ciclo para poder navergar en el menu principal
 while True:
     # Mostrar mensaje de bienvenida y menú principal
@@ -163,287 +282,3 @@ while True:
     elif opcion == 8:  # Salir
         print("Gracias por usar SkyRoute. ¡Hasta luego!")
         break
-
-
-#---------------------------------------- Funciones para Gestionar Clientes ----------------------------------------
-def ver_clientes():
-    if not clientes:
-        print("\nNo hay clientes registrados.")
-    else:
-        print("\nLista de Clientes:")
-        i = 1
-        for cliente in clientes:
-            print(f"\nCliente {i}:")
-            print(f"Razón Social: {cliente['razon_social']}")
-            print(f"CUIT: {cliente['cuit']}")
-            print(f"Correo: {cliente['correo']}")
-            print("-" * 30)
-            i += 1
-            
-
-def agregar_cliente():
-    print("\n--- Agregar Cliente ---")
-    # Validación de CUIT
-    while True:
-        cuit = input("Ingrese CUIT (solo números): ")
-        if cuit.isdigit() and len(cuit) == 11:
-            # Verificar si el CUIT ya existe
-            if any(cliente['cuit'] == cuit for cliente in clientes):
-                print("Este CUIT ya está registrado.")
-                continue
-            break
-        print("El CUIT debe contener 11 números")
-    
-    razon_social = input("Ingrese Razón Social: ")
-    
-    # Validación de correo
-    while True:
-        correo = input("Ingrese correo electrónico: ")
-        if '@' in correo and '.' in correo:
-            break
-        print("Ingrese un correo electrónico válido")
-    
-    # Agregar cliente a la lista
-    clientes.append({
-        'cuit': cuit,
-        'razon_social': razon_social,
-        'correo': correo
-    })
-    
-    print(f"\nCliente agregado exitosamente:")
-    print(f"CUIT: {cuit}")
-    print(f"Razón Social: {razon_social}")
-    print(f"Correo: {correo}")
-
-def modificar_cliente():
-    if not clientes:
-        print("\nNo hay clientes registrados para modificar.")
-    else:
-        print("\nLista de Clientes:")
-        i = 1
-        for cliente in clientes:
-            print(f"\nCliente {i}:")
-            print(f"Razón Social: {cliente['razon_social']}")
-            print(f"CUIT: {cliente['cuit']}")
-            print(f"Correo: {cliente['correo']}")
-            print("-" * 30)
-            i += 1
-
-        while True:
-            try:
-                indice = int(input("\nIngrese el número del cliente a modificar: ")) - 1
-                if 0 <= indice < len(clientes):
-                    cliente = clientes[indice]
-                    print(f"\nModificando cliente {indice + 1}:")
-                    print(f"CUIT actual: {cliente['cuit']}")
-                    print(f"Razón Social actual: {cliente['razon_social']}")
-                    print(f"Correo actual: {cliente['correo']}")
-                    
-                    # Modificar datos
-                    nuevo_cuit = input("\nIngrese nuevo CUIT (Enter para mantener el actual): ")
-                    if nuevo_cuit:
-                        # Validar que el nuevo CUIT tenga 11 dígitos
-                        if not nuevo_cuit.isdigit() or len(nuevo_cuit) != 11:
-                            print("El CUIT debe contener 11 números")
-                        else:
-                            # Verificar si el nuevo CUIT ya existe en otro cliente
-                            if any(c['cuit'] == nuevo_cuit for c in clientes if c != cliente):
-                                print("Este CUIT ya está registrado para otro cliente")
-                            else:
-                                cliente['cuit'] = nuevo_cuit
-                    
-                    nueva_razon_social = input("Ingrese nueva Razón Social (Enter para mantener la actual): ")
-                    if nueva_razon_social:
-                        cliente['razon_social'] = nueva_razon_social
-                    
-                    nuevo_correo = input("Ingrese nuevo correo (Enter para mantener el actual): ")
-                    if nuevo_correo:
-                        if '@' in nuevo_correo and '.' in nuevo_correo:
-                            cliente['correo'] = nuevo_correo
-                        else:
-                            print("Correo no válido, se mantiene el actual")
-                    
-                    print("\nCliente modificado exitosamente:")
-                    print(f"CUIT: {cliente['cuit']}")
-                    print(f"Razón Social: {cliente['razon_social']}")
-                    print(f"Correo: {cliente['correo']}")
-                    break
-                else:
-                    print("Número de cliente no válido.")
-            except ValueError:
-                print("Por favor, ingrese un número válido.")
-
-
-
-#---------------------------------------- Funciones para Gestionar Destinos ----------------------------------------
-def ver_destinos():
-    if not destinos:
-        print("\nNo hay destinos registrados.")
-    else:
-        print("\nLista de Destinos:")
-        for i, destino in enumerate(destinos, 1):
-            print(f"\nDestino {i}:")
-            print(f"Código: {destino['codigo']}")
-            print(f"Ciudad: {destino['ciudad']}")
-            print(f"País: {destino['pais']}")
-            print("-" * 30)
-
-def agregar_destino():
-    print("\n--- Agregar Destino ---")
-    codigo = input("Ingrese código del destino: ")
-    # Verificar si el código ya existe
-    if any(destino['codigo'] == codigo for destino in destinos):
-        print("Este código de destino ya está registrado.")
-    else:
-        ciudad = input("Ingrese ciudad: ")
-        pais = input("Ingrese país: ")
-        
-        # Agregar destino a la lista
-        destinos.append({
-            'codigo': codigo,
-            'ciudad': ciudad,
-            'pais': pais
-        })
-        
-        print(f"\nDestino agregado exitosamente:")
-        print(f"Código: {codigo}")
-        print(f"Ciudad: {ciudad}")
-        print(f"País: {pais}")
-
-def modificar_destino():
-    if not destinos:
-        print("\nNo hay destinos registrados para modificar.")
-    else:
-        print("\nLista de Destinos:")
-        for i, destino in enumerate(destinos, 1):
-            print(f"\nDestino {i}:")
-            print(f"Código: {destino['codigo']}")
-            print(f"Ciudad: {destino['ciudad']}")
-            print(f"País: {destino['pais']}")
-            print("-" * 30)
-        
-        while True:
-            try:
-                indice = int(input("\nIngrese el número del destino a modificar: ")) - 1
-                if 0 <= indice < len(destinos):
-                    destino = destinos[indice]
-                    print(f"\nModificando destino {indice + 1}:")
-                    print(f"Código actual: {destino['codigo']}")
-                    print(f"Ciudad actual: {destino['ciudad']}")
-                    print(f"País actual: {destino['pais']}")
-                    
-                    # Modificar datos
-                    nueva_ciudad = input("\nIngrese nueva ciudad (Enter para mantener la actual): ")
-                    nuevo_pais = input("Ingrese nuevo país (Enter para mantener el actual): ")
-                    
-                    if nueva_ciudad:
-                        destino['ciudad'] = nueva_ciudad
-                    if nuevo_pais:
-                        destino['pais'] = nuevo_pais
-                    
-                    print("\nDestino modificado exitosamente:")
-                    print(f"Código: {destino['codigo']}")
-                    print(f"Ciudad: {destino['ciudad']}")
-                    print(f"País: {destino['pais']}")
-                    break
-                else:
-                    print("Número de destino no válido.")
-            except ValueError:
-                print("Por favor, ingrese un número válido.")
-
-
-
-#---------------------------------------- Funciones para Gestionar Ventas ----------------------------------------
-def ver_ventas():
-    if not ventas:
-        print("\nNo hay ventas registradas.")
-    else:
-        print("\nLista de Ventas:")
-        for i, venta in enumerate(ventas, 1):
-            print(f"\nVenta {i}:")
-            print(f"CUIT Cliente: {venta['cuit_cliente']}")
-            print(f"Código Destino: {venta['codigo_destino']}")
-            print(f"Monto: ${venta['monto']}")
-            print("-" * 30)
-
-def agregar_venta():
-    print("\n--- Agregar Venta ---")
-    # Validación de CUIT del cliente
-    while True:
-        cuit_cliente = input("Ingrese CUIT del cliente (solo números): ")
-        if cuit_cliente.isdigit() and len(cuit_cliente) == 11:
-            # Verificar si el cliente existe
-            if not any(cliente['cuit'] == cuit_cliente for cliente in clientes):
-                print("Este CUIT no está registrado como cliente.")
-                continue
-            break
-        print("El CUIT debe contener 11 números")
-    
-    # Validación del código de destino
-    while True:
-        codigo_destino = input("Ingrese código del destino: ")
-        if any(destino['codigo'] == codigo_destino for destino in destinos):
-            break
-        print("Este código de destino no está registrado.")
-    
-    # Validación del monto
-    while True:
-        monto = input("Ingrese monto (solo números): ")
-        if monto.isdigit():
-            break
-        print("El monto debe contener solo números")
-    
-    # Agregar venta a la lista
-    ventas.append({
-        'cuit_cliente': cuit_cliente,
-        'codigo_destino': codigo_destino,
-        'monto': monto
-    })
-    
-    print(f"\nVenta agregada exitosamente:")
-    print(f"CUIT Cliente: {cuit_cliente}")
-    print(f"Código Destino: {codigo_destino}")
-    print(f"Monto: ${monto}")
-
-def modificar_venta():
-    if not ventas:
-        print("\nNo hay ventas registradas para modificar.")
-    else:
-        print("\nLista de Ventas:")
-        for i, venta in enumerate(ventas, 1):
-            print(f"\nVenta {i}:")
-            print(f"CUIT Cliente: {venta['cuit_cliente']}")
-            print(f"Código Destino: {venta['codigo_destino']}")
-            print(f"Monto: ${venta['monto']}")
-            print("-" * 30)
-        
-        while True:
-            try:
-                indice = int(input("\nIngrese el número de la venta a modificar: ")) - 1
-                if 0 <= indice < len(ventas):
-                    venta = ventas[indice]
-                    print(f"\nModificando venta {indice + 1}:")
-                    print(f"CUIT Cliente actual: {venta['cuit_cliente']}")
-                    print(f"Código Destino actual: {venta['codigo_destino']}")
-                    print(f"Monto actual: ${venta['monto']}")
-                    
-                    # Modificar monto
-                    while True:
-                        nuevo_monto = input("\nIngrese nuevo monto (Enter para mantener el actual): ")
-                        if not nuevo_monto:
-                            break
-                        if nuevo_monto.isdigit():
-                            venta['monto'] = nuevo_monto
-                            break
-                        print("El monto debe contener solo números")
-                    
-                    print("\nVenta modificada exitosamente:")
-                    print(f"CUIT Cliente: {venta['cuit_cliente']}")
-                    print(f"Código Destino: {venta['codigo_destino']}")
-                    print(f"Monto: ${venta['monto']}")
-                    break
-                else:
-                    print("Número de venta no válido.")
-            except ValueError:
-                print("Por favor, ingrese un número válido.")
-
