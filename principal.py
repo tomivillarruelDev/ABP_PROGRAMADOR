@@ -3,24 +3,30 @@ def main():
     print("*" * 48, chr(27) + "[3;4m" + "Bienvenidos a SkyRoute - Sistema de Gestión de Pasajes" + chr(27) + "[1;0m" + "*" * 40)
 
     opcion = -1
-    clientes = ('',0,'')
+    clientes = []
 
-    def Ingresar_clientes():
+    def Ingresar_clientes(cant_clientes):
     
+        for i in range(cant_clientes):
+            print(f"\nCargando datos de la empresa #{i + 1}:")
+            razon_social = input("Ingresar razon social de la empresa: ")
+            cuit = int(input("Ingresar CUIT de la empresa: "))
+            correo = input("Ingresar correo de la empresa: ")
+
+            empresa = [razon_social, cuit, correo]
         
 
+            clientes.append(empresa)
 
-        razon_social = input("Ingresar razon social de la empresa: ")
-        cuit = int(input("Ingresar CUIT de la empresa: "))
-        correo = input("Ingresar correo de la empresa: ")
+    def Mostrar_clientes():
 
-        clientes.append(razon_social, cuit, correo)
-        print("estoy mostrando tupla dsp de ingresar datos", clientes)
-        print("Se ingresaron los siguientes datos:")
-        print("\nRazon socia: ", razon_social)
-        print("\nCUIT: ", cuit)
-        print("\nCorreo de contacto: ", correo)
+        for i in range(len(clientes)):
+            print("Se ingresaron los siguientes datos:")
+            print("\nRazon socia: ", clientes[i][0])
+            print("CUIT: ", clientes[i][1])
+            print("Correo de contacto: ", clientes[i][2])
 
+        
         opcion = 1
 
     while opcion != 0:
@@ -55,8 +61,13 @@ def main():
                     opcion = -1
                 
                 if opcion == 1:
-                    print("sub menú 1")
                     #hacer una validación de que si está la tupla vacia mostrar msj de que no hay datos y deben registrarse
+                    # aca tiene que haber un for que itere en las posiciones 
+                    if not clientes:
+                        print("No hay datos de clientes")
+                    else:
+                        Mostrar_clientes()
+
 
                 if opcion == 2:
                     #razon social
@@ -70,7 +81,9 @@ def main():
                     #validación como es una razon social, alfanumerico , etc
                     #validar en correo el arroba y el .com
 
-                    Ingresar_clientes()
+                    cant_clientes = int(input("Cuantos clientes desea ingresar: "))
+
+                    Ingresar_clientes(cant_clientes)
 
                 if opcion == 3:
                     print("sub menú 3")
@@ -80,8 +93,8 @@ def main():
                     print("sub menú 4")
                     #hacer una validación de que si está la tupla vacia mostrar msj de que no hay datos y deben registrarse
 
-            if opcion == 2:
-                print("Opciones 2")
+            #if opcion == 2:
+                #print("Opciones 2")
 
 
                
