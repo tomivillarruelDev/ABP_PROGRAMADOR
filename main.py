@@ -117,6 +117,56 @@ def modificar_cliente():
             except ValueError:
                 print("Por favor, ingrese un número válido.")
 
+def eliminar_cliente():
+    if not clientes:
+        print("\nNo hay clientes registrados para eliminar.")
+        return
+
+    print("\nLista de Clientes:")
+    for i in range(len(clientes)):
+        print(f"\nCliente {i + 1}:")
+        print(f"Razón Social: {clientes[i]['razon_social']}")
+        print(f"CUIT: {clientes[i]['cuit']}")
+        print(f"Correo: {clientes[i]['correo']}")
+        print("-" * 30)
+    
+    while True:
+        try:
+            indice = int(input("\nIngrese el número del cliente a eliminar (0 para cancelar): ")) - 1
+            if indice == -1:  # Si el usuario ingresa 0
+                print("\nOperación cancelada.")
+                return
+                
+            if 0 <= indice < len(clientes):
+                cliente = clientes[indice]
+                print(f"\n¿Está seguro que desea eliminar el siguiente cliente?")
+                print(f"Razón Social: {cliente['razon_social']}")
+                print(f"CUIT: {cliente['cuit']}")
+                print(f"Correo: {cliente['correo']}")
+                
+                # Verificar si el cliente tiene ventas asociadas
+                ventas_cliente = [v for v in ventas if v['cuit_cliente'] == cliente['cuit']]
+                if ventas_cliente:
+                    print("\n¡ADVERTENCIA! Este cliente tiene ventas asociadas:")
+                    for v in ventas_cliente:
+                        print(f"- Venta del {v['fecha']} a {v['ciudad']}, {v['pais']} (Estado: {v['estado']})")
+                    print("\nNo se puede eliminar el cliente porque tiene ventas asociadas.")
+                    print("Primero debe eliminar o anular todas las ventas del cliente.")
+                    return
+                
+                confirmacion = input("\nIngrese 'SI' para confirmar la eliminación: ")
+                if confirmacion.upper() == 'SI':
+                    clientes.pop(indice)
+                    print("\nCliente eliminado exitosamente.")
+                else:
+                    print("\nOperación cancelada.")
+                break
+            else:
+                print("Número de cliente no válido. Por favor, ingrese un número entre 1 y", len(clientes))
+        except ValueError:
+            print("Por favor, ingrese un número válido.")
+
+
 #---------------------------------------- Funciones para Gestionar Destinos ----------------------------------------
 def ver_destinos():
     if not destinos:
@@ -698,7 +748,7 @@ while True:
             elif subopcion == 3:  # Modificar
                 modificar_cliente()
             elif subopcion == 4:  # Eliminar
-                print("Eliminando cliente...")
+                eliminar_cliente()
             elif subopcion == 5:  # Volver al Menú Principal
                 break
             
