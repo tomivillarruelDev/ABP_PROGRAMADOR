@@ -482,7 +482,7 @@ def boton_arrepentimiento():
             print("-" * 50)
         
         while True:
-            try:
+            try: #Try es una estructura que se utiliza para manejar errores, de esta forma mostramos un mensaje de error en vez de que se detenga el sistema
                 indice = int(input("\nIngrese el número de la venta a anular: ")) - 1
                 if 0 <= indice < len(ventas_activas):
                     venta = ventas_activas[indice]
@@ -535,7 +535,7 @@ def ventas_del_dia():
         print(f"\nVentas activas del día {fecha_actual}:")
         for i in range(len(ventas_dia)):
             # Buscar datos del cliente
-            cliente = next((c for c in clientes if c['cuit'] == ventas_dia[i]['cuit_cliente']), None)
+            cliente = next((c for c in clientes if c['cuit'] == ventas_dia[i]['cuit_cliente']), None) #Con next permite devolver el prmer resultado que coincida sino muestra None
             
             print(f"\nVenta {i + 1}:")
             print("\nDatos del Cliente:")
@@ -552,14 +552,15 @@ def ventas_del_dia():
             print("-" * 50)
 
 def ventas_ultima_semana():
-    from datetime import datetime, timedelta
-    fecha_actual = datetime.now()
-    fecha_inicio = (fecha_actual - timedelta(days=7)).strftime("%d/%m/%Y")
+    from datetime import datetime, timedelta #Para trabajar con fechas primero debemos importarlas
+    fecha_actual = datetime.now() #Datetime nos permite saber la fecha y la hora
+    fecha_inicio = (fecha_actual - timedelta(days=7)).strftime("%d/%m/%Y") #timedelta nos permite hacer operaciones con las fechas por ejemplo para saber las ventas de esta semana
     
     # Filtrar ventas activas de la última semana
-    ventas_semana = [v for v in ventas if v['estado'] == 'Activa']
-    ventas_semana = [v for v in ventas_semana if datetime.strptime(v['fecha'], "%d/%m/%Y %H:%M") >= datetime.strptime(fecha_inicio, "%d/%m/%Y")]
-    
+    ventas_semana = [v for v in ventas if v['estado'] == 'Activa'] #Filtramos de la lista ventas las activas
+    ventas_semana = [v for v in ventas_semana if datetime.strptime(v['fecha'], "%d/%m/%Y %H:%M") >= datetime.strptime(fecha_inicio, "%d/%m/%Y")] #datetime.strptime convierte strings de fecha a objetos datetime, para poder comparar fechas
+    #Los "%d/%m/%Y %H:%M" son formatos de fecha que utiliza Python y la / para separar los items
+
     if not ventas_semana:
         print(f"\nNo hay ventas activas registradas desde {fecha_inicio}")
     else:
@@ -797,7 +798,7 @@ while True:
         print("Proyecto ABP del modulo programador del ISPC\n")
         print("Integrantes:\n")
         print("Enrico Munighini, Antonella\t44.194.338")
-        print("Marovich, Mikael\t\t41.625.321")
+        print("Marovich, Mikael\t\t41.625.321") #El \t es una tabulacion, asi quedan alineados los DNIs
         print("Montiel, Matias\t\t\t42.474.994")
         print("Sanchez, Romina\t\t\t45.348.881")
         print("Villarruel, Tomas\t\t44.896.222")
@@ -807,4 +808,3 @@ while True:
         print("\n¡Gracias por usar Skyroute!\n")
         print("Nos vemos.")
         break
-
