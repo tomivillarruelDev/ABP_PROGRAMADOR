@@ -658,9 +658,13 @@ def ver_ventas_anuladas():
 # Ciclo para poder navergar en el menu principal
 while True:
     # Mostrar mensaje de bienvenida y menú principal
-    print("\nBienvenidos a SkyRoute - Sistema de Gestión de Pasajes")
-    print("\nMenú Principal:")
+    print("\n-------------------------------------------------------")
+    print("Bienvenidos a SkyRoute - Sistema de Gestión de Pasajes")
+    print("-------------------------------------------------------")
+    print("\n| Menú Principal |\n")
     for i in range(len(menu_principal)):
+        if i == 7:  # Antes de la última opción
+            print()  # Salto de línea
         print(f"{i + 1}. {menu_principal[i]}")
     
     # Captura y validación de la opción del menú principal
@@ -785,14 +789,22 @@ while True:
         input("\nPresione Enter para continuar...")
     
     elif opcion == 6:  # Ver Reporte General
-        print("Generando reporte general...")
+        print("\nProximamente...\n")
         input("\nPresione Enter para continuar...")
     
     elif opcion == 7:  # Acerca del Sistema
-        print("SkyRoute v1.0 – Prototipo de consola en Python básico")
+        print("\nSKYROUTE - Sistema de Gestion de Pasajes v1.0.\n")
+        print("Proyecto ABP del modulo programador del ISPC\n")
+        print("Integrantes:\n")
+        print("Enrico Munighini, Antonella\t44.194.338")
+        print("Marovich, Mikael\t\t41.625.321")
+        print("Montiel, Matias\t\t\t42.474.994")
+        print("Sanchez, Romina\t\t\t45.348.881")
+        print("Villarruel, Tomas\t\t44.896.222")
         input("\nPresione Enter para continuar...")
     
     elif opcion == 8:  # Salir
-        print("Gracias por usar SkyRoute. ¡Hasta luego!")
+        print("\n¡Gracias por usar Skyroute!\n")
+        print("Nos vemos.")
         break
 
