@@ -37,7 +37,7 @@ def main():
 
 #-------------------------------------------------------------Mostrar cliente----------------------------------------------------------------
 
-    def Mostrar_clientes():
+    def Mostrar():
         print("_" * 30)
         print("Se ingresaron los siguientes datos:")
 
@@ -48,8 +48,8 @@ def main():
             print("Correo de contacto: ", clientes[i][2])
 
 
-#-------------------------------------------------------------Modificar cliente----------------------------------------------------------------
-    def Modificar_cliente():
+#-------------------------------------------------------------Modificar----------------------------------------------------------------
+    def Modificar():
         for i in range(len(clientes)):
             print("\nCliente:", i+1)
             print("\nRazon social: ", clientes[i][0])
@@ -113,8 +113,8 @@ def main():
             except ValueError:
                 print("Ingrese un numero valido correspondiente a cliente.")
 
-#-------------------------------------------------------------Eliminar cliente-------------------------------------------------------------
-    def Eliminar_cliente():
+#-------------------------------------------------------------Eliminar-------------------------------------------------------------
+    def Eliminar():
         #muestro los clientes que tiene disponible
         for i in range(len(clientes)):
             print("\nCliente:", i+1)
@@ -155,28 +155,29 @@ def main():
             except ValueError:
                 print("Ingrese un numero valido correspondiente a cliente.")
 
-#--------------------------------------------------------------sub menú de destinos--------------------------------------------------------------
-    def mostrar_submenu_destinos():
+
+#--------------------------------------------------------------sub menú--------------------------------------------------------------
+    def mostrar_submenu():
         print(chr(27) + "[1;31m" + "\nSubmenu de opciones:" + chr(27) + "[1;0m")
-        print("=" * 20 + " Gestión de Destinos " + "=" * 20)
-        print(chr(27) + "[1;30m" + "1)" + chr(27) + "[1;0m" + "Ver Destinos.")
-        print(chr(27) + "[1;30m" + "2)" + chr(27) + "[1;0m" + "Agregar Destinos.")
-        print(chr(27) + "[1;30m" + "3)" + chr(27) + "[1;0m" + "Modificar Destinos.")
-        print(chr(27) + "[1;30m" + "4)" + chr(27) + "[1;0m" + "Eliminar Destinos.")
+        print("=" * 20 + " Gestión Submenu " + "=" * 20)
+        print(chr(27) + "[1;30m" + "1)" + chr(27) + "[1;0m" + "Ver.")
+        print(chr(27) + "[1;30m" + "2)" + chr(27) + "[1;0m" + "Agregar.")
+        print(chr(27) + "[1;30m" + "3)" + chr(27) + "[1;0m" + "Modificar.")
+        print(chr(27) + "[1;30m" + "4)" + chr(27) + "[1;0m" + "Eliminar.")
         print(chr(27) + "[1;30m" + "5)" + chr(27) + "[1;0m" + "Volver menu principal.")
         print("=" * 43)
 
+        try:
+            sub_opcion = input("Ingrese la opciones del menu que desea realizar: ")
+            if sub_opcion.isdigit() and 1 <= int(sub_opcion) <= 5:
+                sub_opcion = int(sub_opcion)
+                return sub_opcion
+            else:
+                #acá no se está cumpliendo la condición
+                 return print("\nIncorrecto. Ingrese una opción del menú.")
+        except ValueError:
+            return print("Ingrese una opción del submenú")
 
-#--------------------------------------------------------------sub menú de clientes--------------------------------------------------------------
-    def mostrar_submenu_clientes():
-        print(chr(27) + "[1;31m" + "\nSubmenu de opciones:" + chr(27) + "[1;0m")
-        print("=" * 20 + " Gestión de Clientes " + "=" * 20)
-        print(chr(27) + "[1;30m" + "1)" + chr(27) + "[1;0m" + "Ver clientes.")
-        print(chr(27) + "[1;30m" + "2)" + chr(27) + "[1;0m" + "Agregar cliente.")
-        print(chr(27) + "[1;30m" + "3)" + chr(27) + "[1;0m" + "Modificar clientes.")
-        print(chr(27) + "[1;30m" + "4)" + chr(27) + "[1;0m" + "Eliminar cliente.")
-        print(chr(27) + "[1;30m" + "5)" + chr(27) + "[1;0m" + "Volver menu principal.")
-        print("=" * 43)
 
 #--------------------------------------------------------------------menú------------------------------------------------------------------
     def Mostrar_Menu():
@@ -191,35 +192,32 @@ def main():
         print(chr(27) + "[1;30m" + "7)" + chr(27) + "[1;0m" + "Acerca del sistema")
         print(chr(27) + "[1;30m" + "8)" + chr(27) + "[1;0m" + "Salir")
         print("=" * 85)
-
-#--------------------------------------------------------------------------------------------------------------------------------------
-    while opcion != 0:
-        Mostrar_Menu()
         try:
             opcion = int(input("Ingrese la opciones del menu que desea realizar: "))
+            return opcion
         except ValueError:
-            print("Debe ingresar un número")
+            return print("Debe ingresar un número")
+
+#-----------------------------------------------------Gestion menus-----------------------------------------------------------------
+    while opcion != 0:
+        opcion = Mostrar_Menu()
 
         if opcion != 0:
             if opcion == 1:
                 while True:
-                    mostrar_submenu_clientes()
-                    sub_opcion = input("Ingrese la opciones del menu que desea realizar: ")
+                    sub_opcion = mostrar_submenu()
 
-                    if sub_opcion.isdigit() and 1 <= int(sub_opcion) <= 5:
-                        sub_opcion = int(sub_opcion)
-                
-                        if sub_opcion == 1:
+                    if sub_opcion == 1:
                         #hacer una validación de que si está la tupla vacia mostrar msj de que no hay datos y deben registrarse
                         # aca tiene que haber un for que itere en las posiciones 
-                            if not clientes:
-                                print("\nNo hay datos de clientes")
+                        if not clientes:
+                            print("\nNo hay datos de clientes")
 
-                            else:
-                                Mostrar_clientes()
+                        else:
+                            Mostrar()
 
 
-                        if sub_opcion == 2:
+                    if sub_opcion == 2:
                         #razon social
                         #CUIT
                         #CORREO DE CONTACTO
@@ -230,35 +228,34 @@ def main():
                         #agregar validacion de lenght de cuit
                         #validación como es una razon social, alfanumerico , etc
                         #validar en correo el arroba y el .com
-                            try:
-                                cant_clientes = int(input("Cuantos clientes desea ingresar: "))
-                                Ingresar_clientes(cant_clientes)
-                            except ValueError:
-                                print("Debe ingresar un número valido")
+                        try:
+                            cant_clientes = int(input("Cuantos clientes desea ingresar: "))
+                            Ingresar_clientes(cant_clientes)
+                        except ValueError:
+                            print("Debe ingresar un número valido")
 
-                        if sub_opcion == 3:
-                            #hacer una validación de que si está la tupla vacia mostrar msj de que no hay datos y deben registrarse
-                            if not clientes:
-                                print("\nNo hay clientes registrados.")
-                            else:
-                               Modificar_cliente()
+                    if sub_opcion == 3:
+                        #hacer una validación de que si está la tupla vacia mostrar msj de que no hay datos y deben registrarse
+                        if not clientes:
+                            print("\nNo hay clientes registrados.")
+                        else:
+                            Modificar()
 
-                        if sub_opcion == 4:
+                    if sub_opcion == 4:
                             #hacer una validación de que si está la tupla vacia mostrar msj de que no hay datos y deben registrarse
-                            if not clientes:
-                                print("\nNo hay clientes registrados")
-                            else:
-                                Eliminar_cliente()
+                        if not clientes:
+                            print("\nNo hay clientes registrados")
+                        else:
+                            Eliminar()
                                
                         #sale del submenú
-                        if sub_opcion == 5:
-                            break
+                    if sub_opcion == 5:
+                        break
+                   
+            if opcion == 2:
+                sub_opcion = mostrar_submenu()
 
-                    else:
-                        #acá no se está cumpliendo la condición
-                        print("\nIncorrecto. Ingrese una opción del menú.")
-        if opcion == 2:
-            mostrar_submenu_destinos()
+
 
 
 if __name__ == '__main__':
