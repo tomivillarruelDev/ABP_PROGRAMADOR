@@ -55,11 +55,11 @@ destinos = [
 ]
 
 ventas = [
-    {"id": 1, "usuario_id": 1, "destino_id": 2, "fecha": "01/10/2023 10:00", "estado": "Activa", "monto": 800},
-    {"id": 2, "usuario_id": 2, "destino_id": 1, "fecha": "01/10/2023 11:00", "estado": "Activa", "monto": 1000},
-    {"id": 3, "usuario_id": 1, "destino_id": 3, "fecha": "01/10/2023 12:00", "estado": "Activa", "monto": 1200},
-    {"id": 4, "usuario_id": 3, "destino_id": 4, "fecha": "01/10/2023 13:00", "estado": "Activa", "monto": 1500},
-    {"id": 5, "usuario_id": 2, "destino_id": 3, "fecha": "01/10/2023 14:00", "estado": "Activa", "monto": 1200}
+    {"id": 1, "cliente_id": 1, "destino_id": 2, "fecha": "01/10/2023 10:00", "estado": "Activa", "monto": 800},
+    {"id": 2, "cliente_id": 2, "destino_id": 1, "fecha": "01/10/2023 11:00", "estado": "Activa", "monto": 1000},
+    {"id": 3, "cliente_id": 1, "destino_id": 3, "fecha": "01/10/2023 12:00", "estado": "Activa", "monto": 1200},
+    {"id": 4, "cliente_id": 3, "destino_id": 4, "fecha": "01/10/2023 13:00", "estado": "Activa", "monto": 1500},
+    {"id": 5, "cliente_id": 2, "destino_id": 3, "fecha": "01/10/2023 14:00", "estado": "Activa", "monto": 1200}
 ]
 
 
@@ -124,6 +124,9 @@ def agregar_cliente():
 
 def modificar_cliente():
     ver_clientes()
+    if not clientes:
+        print("\nNo hay clientes para modificar.")
+        return
     # Selección por ID
     while True:
         try:
@@ -176,6 +179,9 @@ def modificar_cliente():
 
 def eliminar_cliente():
     ver_clientes()
+    if not clientes:
+        print("\nNo hay clientes para modificar.")
+        return
     # Selección por ID
     while True:
         try:
@@ -197,11 +203,13 @@ def eliminar_cliente():
     print(f"Email: {cliente['email']}")
     
     # Verificar si el cliente tiene ventas asociadas
-    ventas_cliente = [v for v in ventas if v.get('cuit_cliente') == cliente['cuit']]
+    ventas_cliente = [v for v in ventas if v.get('cliente_id') == cliente['id']]
     if ventas_cliente:
         print("\n¡ADVERTENCIA! Este cliente tiene ventas asociadas:")
         for v in ventas_cliente:
-            print(f"- Venta del {v['fecha']} a {v['ciudad']}, {v['pais']} (Estado: {v['estado']})")
+            destino = next((d for d in destinos if d['id'] == v['destino_id']), None)
+            destino_nombre = destino['nombre'] if destino else 'Destino desconocido'
+            print(f"- Venta del {v['fecha']} a {destino_nombre} (Estado: {v['estado']})")
         print("\nNo se puede eliminar el cliente porque tiene ventas asociadas.")
         print("Primero debe eliminar o anular todas las ventas del cliente.")
         return
@@ -260,6 +268,9 @@ def agregar_destino():
 
 def modificar_destino():
         ver_destinos()
+        if not destinos:
+            print("\nNo hay destinos para modificar.")
+            return
         # Selección por ID
         while True:
             try:
@@ -306,6 +317,9 @@ def modificar_destino():
 
 def eliminar_destino():
         ver_destinos()
+        if not destinos:
+            print("\nNo hay destinos para eliminar.")
+            return
         # Selección por ID
         while True:
             try:
@@ -340,7 +354,7 @@ def ver_ventas():
         print("\nLista de Ventas:")
         for venta in ventas:
             # Obtener cliente y destino por sus IDs
-            cliente = next((c for c in clientes if c['id'] == venta.get('usuario_id')), None)
+            cliente = next((c for c in clientes if c['id'] == venta.get('cliente_id')), None)
             destino = next((d for d in destinos if d['id'] == venta.get('destino_id')), None)
             print(f"\nVenta ID: {venta.get('id')}")
             print(f"Fecha: {venta['fecha']}")
@@ -408,7 +422,7 @@ def agregar_venta():
     # Agregar venta a la lista
     ventas.append({
         'id': venta_id,
-        'usuario_id': cliente_id,
+        'cliente_id': cliente_id,
         'destino_id': destino_id,
         'fecha': fecha_actual,
         'estado': 'Activa',
@@ -429,12 +443,14 @@ def agregar_venta():
     print(f"Estado: Activa")
 
 def modificar_venta():
+    ver_ventas()
     if not ventas:
         print("\nNo hay ventas registradas para modificar.")
         return
+    
     print("\nLista de Ventas:")
     for venta in ventas:
-        cliente = next((c for c in clientes if c['id'] == venta.get('usuario_id')), None)
+        cliente = next((c for c in clientes if c['id'] == venta.get('cliente_id')), None)
         destino = next((d for d in destinos if d['id'] == venta.get('destino_id')), None)
         print(f"ID Venta: {venta['id']}")
         print("Datos del Cliente:")
@@ -469,13 +485,13 @@ def modificar_venta():
     for cliente in clientes:
         print(f"ID: {cliente['id']} | Razón Social: {cliente['razon_social']} | CUIT: {cliente['cuit']}")
     while True:
-        nuevo_cliente_id = input(f"Ingrese nuevo ID de cliente (actual {venta['usuario_id']}, Enter para mantener): ")
+        nuevo_cliente_id = input(f"Ingrese nuevo ID de cliente (actual {venta['cliente_id']}, Enter para mantener): ")
         if not nuevo_cliente_id:
             break
         if nuevo_cliente_id.isdigit():
             nuevo_cliente_id = int(nuevo_cliente_id)
             if any(c['id'] == nuevo_cliente_id for c in clientes):
-                venta['usuario_id'] = nuevo_cliente_id
+                venta['cliente_id'] = nuevo_cliente_id
                 break
             else:
                 print("ID de cliente no válido.")
@@ -504,7 +520,7 @@ def modificar_venta():
             
     print("\nVenta modificada exitosamente.")
     print(f"ID Venta: {venta['id']}")
-    print(f"Cliente ID: {venta['usuario_id']}")
+    print(f"Cliente ID: {venta['cliente_id']}")
     print(f"Destino ID: {venta['destino_id']}")
     print(f"Monto: ${venta['monto']}")
     print(f"Estado: {venta['estado']}")
@@ -513,9 +529,10 @@ def eliminar_venta():
     if not ventas:
         print("\nNo hay ventas registradas para eliminar.")
         return
+    
     print("\nLista de Ventas:")
     for venta in ventas:
-        cliente = next((c for c in clientes if c['id'] == venta.get('usuario_id')), None)
+        cliente = next((c for c in clientes if c['id'] == venta.get('cliente_id')), None)
         destino = next((d for d in destinos if d['id'] == venta.get('destino_id')), None)
         print(f"ID Venta: {venta['id']}")
         print("Datos del Cliente:")
@@ -555,13 +572,14 @@ def boton_arrepentimiento():
     if not ventas:
         print("\nNo hay ventas registradas.")
         return
+    
     ventas_activas = [v for v in ventas if v.get('estado', 'Activa') == 'Activa']
     if not ventas_activas:
         print("No hay ventas activas para anular.")
         return
     print("\nVentas Activas:")
     for venta in ventas_activas:
-        cliente = next((c for c in clientes if c['id'] == venta.get('usuario_id')), None)
+        cliente = next((c for c in clientes if c['id'] == venta.get('cliente_id')), None)
         destino = next((d for d in destinos if d['id'] == venta.get('destino_id')), None)
         print(f"ID Venta: {venta['id']}")
         print(f"Fecha: {venta.get('fecha', 'N/A')}")
@@ -612,7 +630,7 @@ def ventas_del_dia():
     else:
         print(f"\nVentas activas del día {fecha_actual}:")
         for venta in ventas_dia:
-            cliente = next((c for c in clientes if c['id'] == venta.get('usuario_id')), None)
+            cliente = next((c for c in clientes if c['id'] == venta.get('cliente_id')), None)
             destino = next((d for d in destinos if d['id'] == venta.get('destino_id')), None)
             print(f"ID Venta: {venta['id']}")
             print("Datos del Cliente:")
@@ -644,7 +662,7 @@ def ventas_ultima_semana():
     else:
         print(f"\nVentas activas desde {fecha_inicio.strftime('%d/%m/%Y')}:")
         for venta in ventas_semana:
-            cliente = next((c for c in clientes if c['id'] == venta.get('usuario_id')), None)
+            cliente = next((c for c in clientes if c['id'] == venta.get('cliente_id')), None)
             destino = next((d for d in destinos if d['id'] == venta.get('destino_id')), None)
             print(f"ID Venta: {venta['id']}")
             print("Datos del Cliente:")
@@ -669,6 +687,7 @@ def ventas_por_cliente():
     if not ventas:
         print("\nNo hay ventas registradas.")
         return
+    
     print("\nClientes disponibles:")
     for cliente in clientes:
         print(f"ID: {cliente['id']} | Razón Social: {cliente['razon_social']} | CUIT: {cliente['cuit']}")
@@ -677,7 +696,7 @@ def ventas_por_cliente():
             cliente_id = int(input("\nIngrese el ID del cliente para ver sus ventas: "))
             cliente = next((c for c in clientes if c['id'] == cliente_id), None)
             if cliente:
-                ventas_cliente = [v for v in ventas if v.get('usuario_id') == cliente_id and v.get('estado', 'Activa') == 'Activa']
+                ventas_cliente = [v for v in ventas if v.get('cliente_id') == cliente_id and v.get('estado', 'Activa') == 'Activa']
                 if not ventas_cliente:
                     print(f"\nNo hay ventas activas registradas para el cliente {cliente['razon_social']}")
                 else:
@@ -711,7 +730,7 @@ def ver_ventas_anuladas():
     else:
         print("\nVentas Anuladas:")
         for venta in ventas_anuladas:
-            cliente = next((c for c in clientes if c['id'] == venta.get('usuario_id')), None)
+            cliente = next((c for c in clientes if c['id'] == venta.get('cliente_id')), None)
             destino = next((d for d in destinos if d['id'] == venta.get('destino_id')), None)
             print(f"ID Venta: {venta['id']}")
             print("Datos del Cliente:")
@@ -774,12 +793,12 @@ def clientes_frecuentes():
         return
     conteo = {}
     for v in ventas_activas:
-        usuario_id = v['usuario_id']
-        conteo[usuario_id] = conteo.get(usuario_id, 0) + 1
+        cliente_id = v['cliente_id']
+        conteo[cliente_id] = conteo.get(cliente_id, 0) + 1
     print("\n--- Clientes frecuentes ---")
     # Ordenar manualmente por cantidad descendente
-    for usuario_id, cantidad in sorted(conteo.items(), key=lambda x: x[1], reverse=True):
-        cliente = next((c for c in clientes if c['id'] == usuario_id), None)
+    for cliente_id, cantidad in sorted(conteo.items(), key=lambda x: x[1], reverse=True):
+        cliente = next((c for c in clientes if c['id'] == cliente_id), None)
         nombre = cliente['razon_social'] if cliente else 'Desconocido'
         print(f"{nombre}: {cantidad} compras")
     print()
