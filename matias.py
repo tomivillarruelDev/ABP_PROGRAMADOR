@@ -331,10 +331,14 @@ def ver_ventas():
             print("-" * 50)
 
 def agregar_venta():
-    print("\n--- Agregar Venta ---")
+    print("=" * 20 + "    Agregar venta    " + "=" * 20)
     # Validación de CUIT del cliente
     while True:
-        cuit_cliente = input("Ingrese CUIT del cliente (solo números): ")
+        if not clientes:
+            print("No hay clientes registrados")
+            break
+        else:
+            cuit_cliente = input("Ingrese CUIT del cliente (solo números): ")
         if cuit_cliente.isdigit() and len(cuit_cliente) == 11:
             # Verificar si el cliente existe
             cliente = next((c for c in clientes if c['cuit'] == cuit_cliente), None)
@@ -709,10 +713,9 @@ def ver_ventas_anuladas():
 # Ciclo para poder navergar en el menu principal
 while True:
     # Mostrar mensaje de bienvenida y menú principal
-    print("\n-------------------------------------------------------")
-    print("Bienvenidos a SkyRoute - Sistema de Gestión de Pasajes")
-    print("-------------------------------------------------------")
-    print("\n| Menú Principal |\n")
+    print("*" * 48, chr(27) + "[3;4m" + "Bienvenidos a SkyRoute - Sistema de Gestión de Pasajes" + chr(27) + "[1;0m" + "*" * 48)
+
+    print(chr(27) + "[1;31m" + "\n| Menú Principal |\n" + chr(27) + "[1;0m")
     for i in range(len(menu_principal)):
         if i == 7:  # Antes de la última opción
             print()  # Salto de línea
@@ -729,7 +732,7 @@ while True:
     # Procesamiento de la opción seleccionada
     if opcion == 1:  # Gestionar Clientes
         while True:
-            print("\n--- Gestionar Clientes ---")
+            print("=" * 20 + "    Gestionar Clientes    " + "=" * 20)
             for i in range(len(submenu_gestion)):
                 print(f"{i + 1}. {submenu_gestion[i]}")
             
@@ -756,7 +759,7 @@ while True:
     
     elif opcion == 2:  # Gestionar Destinos
         while True:
-            print("\n--- Gestionar Destinos ---")
+            print("=" * 20 + "    Gestionar Destinos    " + "=" * 20)
             for i in range(len(submenu_gestion)):
                 print(f"{i + 1}. {submenu_gestion[i]}")
             
@@ -783,7 +786,7 @@ while True:
     
     elif opcion == 3:  # Gestionar Ventas
         while True:
-            print("\n--- Gestionar Ventas ---")
+            print("=" * 20 + "    Gestionar Ventas    " + "=" * 20)
             for i in range(len(submenu_gestion)):
                 print(f"{i + 1}. {submenu_gestion[i]}")
             
@@ -810,7 +813,7 @@ while True:
     
     elif opcion == 4:  # Consultar Ventas
         while True:
-            print("\n--- Consultar Ventas ---")
+            print("=" * 20 + "    Consultar ventas    " + "=" * 20)
             for i in range(len(submenu_consulta)):
                 print(f"{i + 1}. {submenu_consulta[i]}")
             
@@ -840,18 +843,18 @@ while True:
         input("\nPresione Enter para continuar...")
     
     elif opcion == 6:  # Ver Reporte General
-        print("\nProximamente...\n")
+        print("=" * 20 + "    Reporte general    " + "=" * 20)
         input("\nPresione Enter para continuar...")
     
     elif opcion == 7:  # Acerca del Sistema
-        print("\nSKYROUTE - Sistema de Gestion de Pasajes v1.0.\n")
+        print("*" * 48, chr(27) + "[3;4m" + "SKYROUTE - Sistema de Gestion de Pasajes v1.0." + chr(27) + "[1;0m" + "*" * 40)
         print("Proyecto ABP del modulo programador del ISPC\n")
         print("Integrantes:\n")
-        print("Enrico Munighini, Antonella\t44.194.338")
-        print("Marovich, Mikael\t\t41.625.321") #El \t es una tabulacion, asi quedan alineados los DNIs
-        print("Montiel, Matias\t\t\t42.474.994")
-        print("Sanchez, Romina\t\t\t45.348.881")
-        print("Villarruel, Tomas\t\t44.896.222")
+        print("\033[1m" + "Enrico Munighini, Antonella" + "\033[0m" + "\t44.194.338")
+        print("\033[1m" + "Marovich, Mikael" + "\033[0m" + "\t\t41.625.321") #El \t es una tabulacion, asi quedan alineados los DNIs
+        print("\033[1m" + "Montiel, Matias" + "\033[0m" + "\t\t\t42.474.994")
+        print("\033[1m" + "Sanchez, Romina" + "\033[0m" + "\t\t\t45.348.881")
+        print("\033[1m" + "Villarruel, Tomas" + "\033[0m" + "\t\t44.896.222")
         input("\nPresione Enter para continuar...")
     
     elif opcion == 8:  # Salir
