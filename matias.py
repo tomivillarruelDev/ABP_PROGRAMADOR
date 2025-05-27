@@ -1,5 +1,32 @@
 # Sistema de Gestión de Pasajes SkyRoute
 
+#ENCABEZADO
+#Propósito del sistema:
+#El sistema fue desarrollado con el objetivo de gestionar clientes y destinos de manera eficiente, ofreciendo funcionalidades para 
+# ingresar, modificar, visualizar y eliminar datos a través de una interfaz de consola amigable. Está orientado a facilitar el manejo de información 
+# en entornos donde se requiere un control sencillo pero funcional de registros relacionados con servicios o viajes.
+
+
+#Instalación y ejecución:
+#Requisitos previos:
+#Python 3.10 o superior
+#Sistema operativo: Windows, Linux o macOS
+
+
+#Ejecturar programa:
+#python main.py
+
+
+#Integrantes del grupo:
+#Nombre y Apellido	               DNI
+#Enrico Munighini, Antonella	   44.194.338
+#Marovich, Mikael	               41.625.321
+#Montiel, Matías	               42.474.994
+#Sánchez, Romina	               45.348.881
+#Villarruel, Tomás	               44.896.222
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
 #Aca definimos las opciones en los menus con una tupla
 menu_principal = ("Gestionar Clientes", "Gestionar Destinos", "Gestionar Ventas", 
                  "Consultar Ventas", "Botón de Arrepentimiento", "Ver Reporte General", 
