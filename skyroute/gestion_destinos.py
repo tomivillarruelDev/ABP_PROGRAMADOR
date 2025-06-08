@@ -162,7 +162,7 @@ def eliminar_destino(conexion):
         except ValueError:
             print("Por favor, ingrese un número válido.")
     # Verificar si el destino tiene ventas asociadas
-    cursor.execute("SELECT COUNT(*) FROM ventas WHERE destino_id = %s", (id_sel,))
+    cursor.execute("SELECT COUNT(*) FROM ventas WHERE id_destino = %s", (id_sel,))
     if cursor.fetchone()[0] > 0:
         print("\nNo se puede eliminar el destino porque tiene ventas asociadas.\nPrimero debe eliminar o anular todas las ventas de ese destino.")
         cursor.close()

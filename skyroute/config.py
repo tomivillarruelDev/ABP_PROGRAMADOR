@@ -4,4 +4,4 @@
 DB_HOST = 'localhost'
 DB_USER = 'root'
 DB_PASSWORD = 'ABPR0OT2025'
-DB_NAME = 'skyroute_db'
+DB_NAME = 'Skyroute_db'

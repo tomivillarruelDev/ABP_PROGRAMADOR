@@ -12,8 +12,8 @@ def ver_ventas(conexion):
                c.razon_social, c.cuit, c.email,
                d.id_destino, ciu.nombre, p.nombre
         FROM ventas v
-        JOIN clientes c ON v.cliente_id = c.id_cliente
-        JOIN destinos d ON v.destino_id = d.id_destino
+        JOIN clientes c ON v.id_cliente = c.id_cliente
+        JOIN destinos d ON v.id_destino = d.id_destino
         JOIN ciudades ciu ON d.id_ciudad = ciu.id_ciudad
         JOIN paises p ON ciu.id_pais = p.id_pais
         ORDER BY v.id_venta
@@ -92,7 +92,7 @@ def agregar_venta(conexion):
     print()
     fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     cursor.execute(
-        "INSERT INTO ventas (cliente_id, destino_id, fecha, estado, monto) VALUES (%s, %s, %s, 'Activa', %s)",
+        "INSERT INTO ventas (id_cliente, id_destino, fecha, estado, monto) VALUES (%s, %s, %s, 'Activa', %s)",
         (cliente_id, destino_id, fecha_actual, destino[3])
     )
     conexion.commit()
@@ -106,8 +106,8 @@ def boton_arrepentimiento(conexion):
     cursor.execute('''
         SELECT v.id_venta, v.fecha, v.estado, v.monto, c.razon_social, ciu.nombre, p.nombre
         FROM ventas v
-        JOIN clientes c ON v.cliente_id = c.id_cliente
-        JOIN destinos d ON v.destino_id = d.id_destino
+        JOIN clientes c ON v.id_cliente = c.id_cliente
+        JOIN destinos d ON v.id_destino = d.id_destino
         JOIN ciudades ciu ON d.id_ciudad = ciu.id_ciudad
         JOIN paises p ON ciu.id_pais = p.id_pais
         WHERE v.estado = 'Activa'

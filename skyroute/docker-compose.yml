@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ABPR0OT2025
-      MYSQL_DATABASE: skyroute_db
+      MYSQL_DATABASE: Skyroute_db
       MYSQL_USER: skyroute
       MYSQL_PASSWORD: skyroute
     ports:
