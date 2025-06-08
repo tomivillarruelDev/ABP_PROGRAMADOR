@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS paises (
 
 -- Tabla de ciudades
 CREATE TABLE IF NOT EXISTS ciudades (
-    id_ciudad INT AUTO_INCREMENT PRIMARY KEY,
+    id_ciudad INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     id_pais INT NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     FOREIGN KEY (id_pais) REFERENCES paises(id_pais) ON DELETE RESTRICT,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS destinos (
 
 -- Tabla de clientes
 CREATE TABLE IF NOT EXISTS clientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     razon_social VARCHAR(100) NOT NULL,
     cuit VARCHAR(11) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS clientes (
 
 -- Tabla de ventas
 CREATE TABLE IF NOT EXISTS ventas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_venta INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     cliente_id INT NOT NULL,
     destino_id INT NOT NULL,
     fecha DATETIME NOT NULL,
     estado ENUM('Activa', 'Anulada') NOT NULL DEFAULT 'Activa',
     monto DECIMAL(10,2) NOT NULL,
     fecha_anulacion DATETIME NULL,
-    FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE RESTRICT,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id_cliente) ON DELETE RESTRICT,
     FOREIGN KEY (destino_id) REFERENCES destinos(id_destino) ON DELETE RESTRICT
 );
 
@@ -62,7 +62,7 @@ INSERT INTO destinos (id_ciudad, costo_base) VALUES
 (2, 800.00),
 (3, 1200.00),
 (4, 1500.00),
-(5, 2000.00);
+(5, 2000.00); 
 
 -- Datos de ejemplo para clientes
 INSERT INTO clientes (razon_social, cuit, email) VALUES

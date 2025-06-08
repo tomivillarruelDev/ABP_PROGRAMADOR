@@ -8,7 +8,7 @@ def generar_id(lista):
 
 def ver_clientes(conexion):
     cursor = conexion.cursor()
-    cursor.execute("SELECT id, razon_social, cuit, email FROM clientes")
+    cursor.execute("SELECT id_cliente, razon_social, cuit, email FROM clientes")
     clientes = cursor.fetchall()
     if not clientes:
         print("\nNo hay clientes registrados.")
@@ -52,7 +52,7 @@ def agregar_cliente(conexion):
 def modificar_cliente(conexion):
     ver_clientes(conexion)
     cursor = conexion.cursor()
-    cursor.execute("SELECT id FROM clientes")
+    cursor.execute("SELECT id_cliente FROM clientes")
     ids = [row[0] for row in cursor.fetchall()]
     if not ids:
         print("\nNo hay clientes para modificar.")
@@ -70,7 +70,7 @@ def modificar_cliente(conexion):
             print("ID de cliente no válido.")
         except ValueError:
             print("Por favor, ingrese un número válido.")
-    cursor.execute("SELECT razon_social, cuit, email FROM clientes WHERE id = %s", (id_sel,))
+    cursor.execute("SELECT razon_social, cuit, email FROM clientes WHERE id_cliente = %s", (id_sel,))
     actual = cursor.fetchone()
     print(f"\nModificando cliente con ID {id_sel}: ")
     print(f"CUIT actual: {actual[1]}")
@@ -81,20 +81,20 @@ def modificar_cliente(conexion):
         if not nuevo_cuit.isdigit() or len(nuevo_cuit) != 11:
             print("El CUIT debe contener 11 números")
         else:
-            cursor.execute("SELECT COUNT(*) FROM clientes WHERE cuit = %s AND id != %s", (nuevo_cuit, id_sel))
+            cursor.execute("SELECT COUNT(*) FROM clientes WHERE cuit = %s AND id_cliente != %s", (nuevo_cuit, id_sel))
             if cursor.fetchone()[0] > 0:
                 print("Este CUIT ya está registrado para otro cliente")
             else:
-                cursor.execute("UPDATE clientes SET cuit = %s WHERE id = %s", (nuevo_cuit, id_sel))
+                cursor.execute("UPDATE clientes SET cuit = %s WHERE id_cliente = %s", (nuevo_cuit, id_sel))
                 conexion.commit()
     nueva_razon_social = input("Ingrese nueva Razón Social (Enter para mantener la actual): ")
     if nueva_razon_social:
-        cursor.execute("UPDATE clientes SET razon_social = %s WHERE id = %s", (nueva_razon_social, id_sel))
+        cursor.execute("UPDATE clientes SET razon_social = %s WHERE id_cliente = %s", (nueva_razon_social, id_sel))
         conexion.commit()
     nuevo_email = input("Ingrese nuevo email (Enter para mantener el actual): ")
     if nuevo_email:
         if '@' in nuevo_email and '.' in nuevo_email:
-            cursor.execute("UPDATE clientes SET email = %s WHERE id = %s", (nuevo_email, id_sel))
+            cursor.execute("UPDATE clientes SET email = %s WHERE id_cliente = %s", (nuevo_email, id_sel))
             conexion.commit()
         else:
             print("Email no válido, se mantiene el actual")
@@ -104,7 +104,7 @@ def modificar_cliente(conexion):
 def eliminar_cliente(conexion):
     ver_clientes(conexion)
     cursor = conexion.cursor()
-    cursor.execute("SELECT id FROM clientes")
+    cursor.execute("SELECT id_cliente FROM clientes")
     ids = [row[0] for row in cursor.fetchall()]
     if not ids:
         print("\nNo hay clientes para eliminar.")
@@ -130,7 +130,7 @@ def eliminar_cliente(conexion):
         return
     confirmacion = input("\nIngrese 'SI' para confirmar la eliminación: ")
     if confirmacion.upper() == 'SI':
-        cursor.execute("DELETE FROM clientes WHERE id = %s", (id_sel,))
+        cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (id_sel,))
         conexion.commit()
         print("\nCliente eliminado exitosamente.")
     else:
