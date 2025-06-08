@@ -1,0 +1,18 @@
+services:
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ABPR0OT2025
+      MYSQL_DATABASE: skyroute_db
+      MYSQL_USER: skyroute
+      MYSQL_PASSWORD: skyroute
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+
+volumes:
+  db_data:
